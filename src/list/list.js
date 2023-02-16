@@ -1,74 +1,89 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 
  export function List(details){
     
     const [priority,changePriority]=useState(false);
     const [complete,changeComplete]=useState(false);
+    const [taskDetails,changeTaskDetails]=useState(details.details)
+    
+    useEffect(()=>{
+        applayFilter();
+    },[priority,complete])
 
-    var filterdDetails=details.details;
 
-    if(priority==true && complete==false){
-        var priorityFilter=details.details.filter(function(e){
-            return e.priority==true
-        })
+    useEffect(()=>{
+        changeTaskDetails(details.details)
+    },[details.details])
 
-        filterdDetails=priorityFilter;
-        console.log('filter',priorityFilter)
-                
+    console.log('child rendered')
+    
+    const applayFilter = () =>{
+        if(priority==true && complete==false){
+            var filterdDetails=details.details.filter(function(e){
+                return e.priority==true
+            })  
+            
+            changeTaskDetails(filterdDetails)
+        }
+        else if(priority==false && complete==true){
+            var filterdDetails=details.details.filter(function(e){
+                return e.complete==true
+            })                
+
+            changeTaskDetails(filterdDetails)
+        }
+        else if(priority==true && complete==true){
+            var filterdDetails=details.details.filter(function(e){
+                return e.priority==true && e.complete==true
+            })             
+
+            changeTaskDetails(filterdDetails)
+        }
+        else{
+            filterdDetails=details.details;
+
+            changeTaskDetails(filterdDetails)
+        }
     }
-            else if(priority==false && complete==true){
-                var completeFilter=details.details.filter(function(e){
-                    return e.complete==true
-                })
-
-                filterdDetails=completeFilter;
-                
-            }
-            else if(priority==true && complete==true){
-                var priorityCompleteFilter=details.details.filter(function(e){
-                    return e.priority==true && e.complete==true
-                })
-
-                filterdDetails=priorityCompleteFilter
-                
-            }
-            else{
-                filterdDetails=details.details;
-            }
 
     function changeInputValue(event){
-        if(event.target.name=='filter-priority'){
-            changePriority(event.target.checked)
 
+        console.log(event)
+        if(event.target.name==='filter'){
+            changePriority(event.target.checked)
         }
         else{
             changeComplete(event.target.checked)
-        }
+        }     
+        
     }
+
 
     return(
         <div>
             <div>
                 <label>priority</label>
-                <input type={'checkbox'} name='filter-priority' onChange={(event)=>changeInputValue(event)}/>
+                <input type={'checkbox'} name='filter' checked={priority} onChange={(event)=>changeInputValue(event)}/>
             </div>
             <div>
                 <label>complete</label>
-                <input type={'checkbox'} name='filter-Complete' onChange={(event)=>changeInputValue(event)}/>
+                <input type={'checkbox'} name="complete" checked={complete} onChange={(event)=>changeInputValue(event)}/>
             </div>
                        
                  {
 
-                    filterdDetails.map((e,index)=>{
+                    taskDetails.map((e,index)=>{
                         return(
-                            <div className="hello" key={index} >
+                            <div key={index} >
                                 <h1>{e.name}</h1>
                                 <p>{e.description}</p>
-                                {e.priority ? <input type={'checkbox'} name='priority' onChange={(button)=>details.changeFilterValue(button,index)} defaultChecked/>:<input name='priority' onChange={(button)=>details.changeFilterValue(button,index)} type={'checkbox'} />}                               
-                                {e.complete ? <input type={'checkbox'} name='complete' onChange={(button)=>details.changeFilterValue(button,index)} defaultChecked/>:<input name='complete' onChange={(button)=>details.changeFilterValue(button,index)} type={'checkbox'} />}  
+                                <input type={'checkbox'} name='priority' checked={e.priority} onChange={(button)=>details.changeFilterValue(button,index)} />
+                                <input type={'checkbox'} name='complete' checked={e.complete} onChange={(button)=>details.changeFilterValue(button,index)}/>                             
+                                <button onClick={(event)=>details.remove(event,index)}>remove</button>
                             </div>
                         );
-                    })}   
+                    })
+                }   
         </div>
         );
     
