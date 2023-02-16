@@ -14,8 +14,6 @@ function Main(){
   const [complete,changeComplete]=useState(false)
   const [allDetails,changeAllDetails]=useState([])
 
-  console.log('perent rendered')
-
   const handleInputValues = (inputValue) =>{
       
     if(inputValue.target.name=="name"){
@@ -76,10 +74,6 @@ function Main(){
 
     changeAllDetails(removedDetail)
   }
-
-  useEffect(()=>{
-    console.log('alldetails',allDetails)
-  },[allDetails])
     
    return(
     <div>

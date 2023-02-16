@@ -14,8 +14,6 @@ import React,{useEffect, useState} from "react";
     useEffect(()=>{
         changeTaskDetails(details.details)
     },[details.details])
-
-    console.log('child rendered')
     
     const applayFilter = () =>{
         if(priority==true && complete==false){
