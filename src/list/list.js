@@ -10,7 +10,7 @@ import React,{useEffect, useState} from "react";
         applayFilter();
     },[priority,complete])
 
-
+    
     useEffect(()=>{
         changeTaskDetails(details.details)
     },[details.details])
@@ -56,7 +56,6 @@ import React,{useEffect, useState} from "react";
         
     }
 
-
     return(
         <div>
             <div>
@@ -66,19 +65,17 @@ import React,{useEffect, useState} from "react";
             <div>
                 <label>complete</label>
                 <input type={'checkbox'} name="complete" checked={complete} onChange={(event)=>changeInputValue(event)}/>
-            </div>
-                       
+            </div>                   
                  {
-
-                    taskDetails.map((e,index)=>{
-                        return(
-                            <div key={index} >
-                                <h1>{e.name}</h1>
-                                <p>{e.description}</p>
-                                <input type={'checkbox'} name='priority' checked={e.priority} onChange={(button)=>details.changeFilterValue(button,index)} />
-                                <input type={'checkbox'} name='complete' checked={e.complete} onChange={(button)=>details.changeFilterValue(button,index)}/>                             
-                                <button onClick={(event)=>details.remove(event,index)}>remove</button>
-                            </div>
+                taskDetails.map((e,index)=>{
+                    return(
+                        <div key={index} >
+                            <h1>{e.name}</h1>
+                             <p>{e.description}</p>
+                            <input type={'checkbox'} name='priority' checked={e.priority} onChange={(button)=>details.changeFilterValue(button,index)} />
+                            <input type={'checkbox'} name='complete' checked={e.complete} onChange={(button)=>details.changeFilterValue(button,index)}/>                             
+                            <button onClick={(event)=>details.remove(event,index)}>remove</button>
+                        </div>
                         );
                     })
                 }   
